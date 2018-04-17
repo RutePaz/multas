@@ -94,10 +94,21 @@ namespace Multas.Controllers
         public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente, HttpPostedFileBase uploadFotografia) {
             //agente - parametro de entrada
             //include -  dados que vêm da view
-            
+
             //escrever os dados de um novo Agente na BD
             //especificar o ID do novo Agente
-            int idNovoAgente = db.Agentes.Max(a=>a.ID)+1;
+            //testar s ehá resgistos na tabela dos Agentes (count - devolve o número de registos) 
+            //if (db.Agentes.Count() != 0) {}
+            //ou entã, usar a instrução Try/Catch
+            int idNovoAgente = 0;
+            try
+            {
+                idNovoAgente = db.Agentes.Max(a => a.ID) + 1;
+            }
+            catch (Exception) {
+                idNovoAgente = 1;
+            }
+               
             //guardar o ID do novo Agente
             agente.ID = idNovoAgente;
             //Especificar (escolher) o nome do ficheiro
@@ -133,15 +144,22 @@ namespace Multas.Controllers
             //ModelState.IsValid -> 
             //adiciona o novoconfronta os dados fornecidos da View com as exigências do Modelo              
             if (ModelState.IsValid)
-            { 
-                //adiciona o novo agente á BD
-                db.Agentes.Add(agente);
-                //faz 'Commit' às alterações 
-                db.SaveChanges();
-                //redireciona para a pagina de Index
-                //escrever o ficheiro 
-                uploadFotografia.SaveAs(path);
-                return RedirectToAction("Index");
+            {
+                try
+                {
+                    //adiciona o novo agente á BD
+                    db.Agentes.Add(agente);
+                    //faz 'Commit' às alterações 
+                    db.SaveChanges();
+                    //redireciona para a pagina de Index
+                    //escrever o ficheiro 
+                    uploadFotografia.SaveAs(path);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception) {
+                    //ModelState-objecto que identifica o modelo 
+                    ModelState.AddModelError("", "Houve um erro com a criação do novo agente... ");
+                }
             }
             //se houver um erro, representa os dados do Agente na View
             return View(agente);
