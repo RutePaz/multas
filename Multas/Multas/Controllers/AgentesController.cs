@@ -153,12 +153,27 @@ namespace Multas.Controllers
                     db.SaveChanges();
                     //redireciona para a pagina de Index
                     //escrever o ficheiro 
-                    uploadFotografia.SaveAs(path);
+             
+                    //se tudo coorer bem, redireciona para a pagina de index
                     return RedirectToAction("Index");
                 }
-                catch (Exception) {
+                catch (Exception ex) {
                     //ModelState-objecto que identifica o modelo 
                     ModelState.AddModelError("", "Houve um erro com a criação do novo agente... ");
+
+                    ///se existir uma classe chamada 'Erros.cs'
+                    ///iremos nela registar os dados do erro 
+                    ///-cirar um objeto desta classe
+                    ///-atribuir a esse objeto os dados do erro
+                    ///     -nome do controller
+                    ///     -nome do método
+                    ///     -data + hora do erro 
+                    ///     - mensagem do erro (ex)
+                    ///     -dados que se tentavam inserir 
+                    ///     -outros dados considerados relevantes 
+                    /// -guardar o objeto na BD
+                    /// -notificar um gestor do sistema, por email, ou por outro meio do erro e dos seus dados
+                    
                 }
             }
             //se houver um erro, representa os dados do Agente na View
