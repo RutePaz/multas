@@ -18,7 +18,7 @@ namespace Multas.Controllers
 
         // GET: Agentes
         /// <summary>
-        /// lista todos os agentes 
+        /// lista todos os agente 
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
@@ -252,12 +252,23 @@ namespace Multas.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Agentes agentes = db.Agentes.Find(id);
-            //remove o Agente da DB
-            db.Agentes.Remove(agentes);
-            //Commit
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Agentes agente = db.Agentes.Find(id);
+                //remove o Agente da DB
+                db.Agentes.Remove(agente);
+                //Commit
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("", string.Format("Não é possível apagar o Agente nº {0}-{1}, porque há multas associadas a ele", id, agente.Nome)
+                );
+            //se cheguei aqui é porque houve um problema 
+            //devolvo os dados do agente á view
+            return View(agente);
+            }
+
         }
 
         protected override void Dispose(bool disposing)
@@ -270,3 +281,4 @@ namespace Multas.Controllers
         }
     }
 }
+//int (sem ?) porque é pouco provavel que este valor sera alterado
