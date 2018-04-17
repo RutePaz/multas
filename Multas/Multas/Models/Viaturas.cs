@@ -22,8 +22,8 @@ namespace Multas.Models
         public string Cor { get; set; }
         //dados do dono
         public string NomeDono { get; set; }
-        public string MoradaDona { get; set; }
-        public string CodPostal { get; set; }
+        public string MoradaDono { get; set; }
+        public string CodPostalDono { get; set; }
         //lista de objetos que este atributo vai ter como chave forasteira
         //referência ás multas que um condutor recebe numa viatura
         public virtual ICollection <Multas> ListaDeMultas {get;set;}

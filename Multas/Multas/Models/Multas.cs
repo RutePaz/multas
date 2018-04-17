@@ -14,11 +14,11 @@ namespace Multas.Models
 
         public string Infracao { get; set; }
 
-        public string LocalMulta { get; set; }
+        public string LocalDaMulta { get; set; }
 
         public decimal ValorMulta { get; set; }
 
-        public DateTime DatadaMulta { get; set; }
+        public DateTime DataDaMulta { get; set; }
 
 
 

@@ -15,7 +15,7 @@ namespace Multas.Models
         [Key]
         public int ID { get; set; }//isto irá funcionar como chave primária 
 
-        public string NOME { get; set; }
+        public string Nome { get; set; }
 
         public string BI { get; set; }
 
