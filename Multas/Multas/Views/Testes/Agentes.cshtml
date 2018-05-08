@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Agentes";
+}
+
+<h2>Agentes</h2>
+<script>
+    function getAgentes() {
+        return fetch('/api/agentes', { headers: { 'Accept': 'application/json' } })
+            .then((resposta) => resposta.json());
+    }
+
+    /**
+     * 
+     * @@param {Array<{ID:number, Nome, string, Esquadra: string,  Fotografia: string}>} agentes
+     */
+    function mostrarAgentes(agentes) {
+        let grelhaAgentes = document.querySelector('#grelha-agentes');
+
+        let templateAgentes = document.querySelector('#template-agentes');
+        for (let agente of agentes) {
+            /**
+             * @@type {HTMLDivElement}
+             */
+            let divAgente = templateAgentes.cloneNode(true);
+            divAgente.removeAttribute('id');
+            divAgente.querySelector('img').scr = '/imagens/${agente.Fotografia}';
+            divAgente.querySelector('.caption > h3').textContent = agente.Nome;
+            divAgente.querySelector('.caption > p')
+
+        }
+    }
+
+</script>
+
