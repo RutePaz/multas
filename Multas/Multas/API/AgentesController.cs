@@ -20,7 +20,7 @@ namespace Multas.API
         public IHttpActionResult GetAgentes()
         {
             var resultado = db.Agentes
-                 .Select(agente -> new { agente.ID, agente.Nome, agente.Esquadra, agente.Fotografia }).ToList;
+                 .Select(agente-> new { agente.ID, agente.Nome, agente.Esquadra, agente.Fotografia }).ToList;
             return Ok(resultado);
         }
 

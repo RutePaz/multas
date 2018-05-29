@@ -61,7 +61,7 @@ namespace Multas
             user.Email = "tania@mail.pt";
             //user.Nome = "Luís Freitas";
             string userPWD = "123_Asd";
-            var chkUser = userManager.Create(userPWD, );
+            var chkUser = userManager.Create(user, userPWD);
 
             //Adicionar o Utilizador à respetiva Role-Agente-
             if (chkUser.Succeeded)

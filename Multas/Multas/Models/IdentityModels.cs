@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Security.Claims;
@@ -12,7 +13,17 @@ namespace Multas.Models
     //Tem como objetivo gerar objetos do tipo utilizador 
     public class ApplicationUser : IdentityUser
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        /// <summary>
+        /// os atributos que aqui vao ser adicionados serao adicionados a  tabela dos utilizadores
+        /// </summary>
+        public string NomeProprio { get; set; }
+        public string Apelido { get; set; }
+        // ? o valor colocado em DataNascimento é facultativo
+        //Na string isto não é necessário pois esta aceita valores nulos. Uma vez que a string é um array de caracteres o valor "nulo" é aceite 
+        public DateTime? DataNascimento { get; set; }
+        public string NIF { get; set; }
+
+        public async Tkas<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);

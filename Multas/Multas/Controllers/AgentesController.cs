@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Multas.Models;
 
 namespace Multas.Controllers
@@ -26,9 +27,18 @@ namespace Multas.Controllers
             //db.Agentes.ToList() -> em sql: SELECT * FROM Agentes;
             //enviar para a View uma lista com todos os agente da base de dados 
 
+            //recuperar os dados pessoais de uma pessoa que se autenticou 
+            var dadosPessoais = db.Users.Find(User.Identity.GetUserId());
+            //agora, com este objeto, já posso utilizar
+            //os dados pessoais de um utilizador no meu programa 
+            //por exemplo
+            Session["nomeUtilizador"] = dadosPessoais.NomeProprio + "" + dadosPessoais.Apelido;
+
+
+
             //obter a lista de todos os agente 
             //em SQL: Select * from Agentes order by nome
-            var listaDeAgentes=db.Agentes.ToList().OrderBy(a=>a.Nome);
+            var listaDeAgentes=db.Agentes.OrderBy(a=>a.Nome).ToList();
 
             return View(listaDeAgentes);
         }

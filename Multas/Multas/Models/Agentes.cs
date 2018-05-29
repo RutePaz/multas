@@ -28,5 +28,9 @@ namespace Multas.Models
         //referência ás multas que um agente emite 
         public virtual ICollection<Multas> ListaDeMultas { get; set; }
 
+        //nome do login (UserName) utilizado pelo agente
+        //na prática, ´´e uma FK para a tabela dos utilizadores 
+       // [Required]
+        public string UserName { get; set; }
     }
 }
