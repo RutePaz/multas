@@ -13,17 +13,8 @@ namespace Multas.Models
     //Tem como objetivo gerar objetos do tipo utilizador 
     public class ApplicationUser : IdentityUser
     {
-        /// <summary>
-        /// os atributos que aqui vao ser adicionados serao adicionados a  tabela dos utilizadores
-        /// </summary>
-        public string NomeProprio { get; set; }
-        public string Apelido { get; set; }
-        // ? o valor colocado em DataNascimento é facultativo
-        //Na string isto não é necessário pois esta aceita valores nulos. Uma vez que a string é um array de caracteres o valor "nulo" é aceite 
-        public DateTime? DataNascimento { get; set; }
-        public string NIF { get; set; }
 
-        public async Tkas<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -64,6 +55,7 @@ namespace Multas.Models
         public virtual DbSet<Condutores> Condutores { get; set; } //tabela Condutores
         public virtual DbSet<Agentes> Agentes { get; set; } //tabela Agentes
         public virtual DbSet<Viaturas> Viaturas { get; set; } //tabela Agentes
+        public virtual DbSet<Utilizadores> Utilizadores { get; set; } //tabela Utilizadores
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

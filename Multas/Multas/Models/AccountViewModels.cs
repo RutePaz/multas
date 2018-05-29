@@ -84,12 +84,15 @@ namespace Multas.Models
 
         //*********************************************************************************************************
         //atributos 'específicos' de um utilizador 
-        [Required(ErrorMessage="O {0} é de preenchimento obrigatório")]
-        [Display(Name ="Nome Prórpio")]
-        public string NomeProprio { get; set; }
-        public string Apelido { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public string NIF { get; set; }
+        //[Required(ErrorMessage="O {0} é de preenchimento obrigatório")]
+        //[Display(Name ="Nome Prórpio")]
+        //public string NomeProprio { get; set; }
+        //public string Apelido { get; set; }
+        //public DateTime DataNascimento { get; set; }
+        //public string NIF { get; set; }
+
+         //nesta segunda versão, basta adicionar um objeto do tipo Utilizador, para associar todos os seus atributos 
+        public Utilizadores Utilizador { get; set; }
     }
 
     public class ResetPasswordViewModel

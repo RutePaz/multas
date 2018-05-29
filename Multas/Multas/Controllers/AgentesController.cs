@@ -28,17 +28,19 @@ namespace Multas.Controllers
             //enviar para a View uma lista com todos os agente da base de dados 
 
             //recuperar os dados pessoais de uma pessoa que se autenticou 
-            var dadosPessoais = db.Users.Find(User.Identity.GetUserId());
+            //var dadosPessoais = db.Users.Find(User.Identity.GetUserId());
+            
+            var dadosPessoais = db.Utilizadores.Where(u => u.NomeRegistoDoUtilizador.Equals(User.Identity.Name)).FirstOrDefault();
+            //FirstOrDfault para retornar um elemento unico, sem este comando retornaria uma lista
             //agora, com este objeto, já posso utilizar
             //os dados pessoais de um utilizador no meu programa 
             //por exemplo
             Session["nomeUtilizador"] = dadosPessoais.NomeProprio + "" + dadosPessoais.Apelido;
 
 
-
             //obter a lista de todos os agente 
             //em SQL: Select * from Agentes order by nome
-            var listaDeAgentes=db.Agentes.OrderBy(a=>a.Nome).ToList();
+            var listaDeAgentes =db.Agentes.OrderBy(a=>a.Nome).ToList();
 
             return View(listaDeAgentes);
         }
