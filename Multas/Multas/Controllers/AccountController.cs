@@ -12,7 +12,10 @@ using System.Web.Mvc;
 
 namespace Multas.Controllers
 {
-    [Authorize]
+
+
+   // [Authorize] // só pessoas autenticadas e que podem executar estes recursos 
+   [Authorize(Roles = "Agentes")] //so os agentes conseguem autenticar 
     public class AccountController : Controller
     {
         public AccountController()

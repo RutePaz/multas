@@ -12,9 +12,12 @@ using Multas.Models;
 
 namespace Multas.Controllers
 {
+    [Authorize(Roles = "Agentes, GestaoDePessoal")]
+    //tem premissao de acesso quem for agente ou gestaodepessoaç
     public class AgentesController : Controller
     {
-        //cria uma variável 
+        //cria uma variável
+        
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Agentes
@@ -22,6 +25,7 @@ namespace Multas.Controllers
         /// lista todos os agente 
         /// </summary>
         /// <returns></returns>
+        
         public ActionResult Index()
         {
             //db.Agentes.ToList() -> em sql: SELECT * FROM Agentes;
@@ -75,6 +79,7 @@ namespace Multas.Controllers
                 return RedirectToAction("Index");
 
             }
+            //fazer a mesma proteção que foi feita no EDIT (GET)
             //entrega á View os dados do Agente encontrado 
             return View(agente);
         }
@@ -84,6 +89,8 @@ namespace Multas.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = " GestaoDePessoal")]
+        //Neste método, apenas o GestaoDePessoal pode criar 
         public ActionResult Create()
             //apresneta a View para se inserir um novo agente
         {
@@ -103,6 +110,7 @@ namespace Multas.Controllers
         [HttpPost]
         //anortador para proteção por roube de identidade
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = " GestaoDePessoal")]
         public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente, HttpPostedFileBase uploadFotografia) {
             //agente - parametro de entrada
             //include -  dados que vêm da view
@@ -194,10 +202,11 @@ namespace Multas.Controllers
 
         // GET: Agentes/Edit/5
         /// <summary>
-        /// 
+        /// apresentar na view os dados de um agente para 
+        /// eventual edição
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">identifica o agente a editar </param>
+        /// <returns>view</returns>
         public ActionResult Edit(int? id)
         {
             //int? preenchimento facultativo (em sql contrário de NOT NULL)
@@ -222,22 +231,41 @@ namespace Multas.Controllers
                 return RedirectToAction("Index");
 
             }
-            //entrega á View os dados do Agente encontrado 
-            return View(agente);
+            //existe agente 
+            //contudo, será que posso editá-lo
+            if (User.IsInRole("GestaoDePessoal") || User.Identity.Name.Equals(agente.UserName))
+            {
+                //entrega á View os dados do Agente encontrado 
+                return View(agente);
+            }
+            else
+            {
+                //não ha permissão para editar o Agente 
+                return RedirectToAction("Index");
+
+            }
         }
 
         // POST: Agentes/Edit/5
         // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
         // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
         /// <summary>
-        /// 
+        /// concretiza a edição dos dados de um agente 
         /// </summary>
-        /// <param name="agentes"></param>
+        /// <param name="agentes">dados do agente a alterar</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Esquadra,Fotografia")] Agentes agentes)
+        public ActionResult Edit([Bind(Include = "ID,Nome,Esquadra,Fotografia, UserName")] Agentes agentes)
         {
+            ///se o utilizador pertence á role 'GestaoDePessoa', pode efetuar a edição sem qualquer restrição 
+            ///se o utilizador não pertence á role acima referida  e não é o dono, nada se pode fazer 
+            ///se o utilizador nãp pertence á role e é o dono dos dados, apenas pode alterar o 'nome' e a 'fotografia'
+            ///tarefas:
+            ///     1- pesquisar os dados antigos do agente na BD
+            ///     2-substituir nos dados novos, o valor da 'esquadra' pelos dados antigos da 'esquadra'
+            ///     3-guardar dados na BD 
+            ///     nota: claro que a validação do Nome e da Fotografia também tem de acontecer 
             if (ModelState.IsValid)
             {
                 //neste caso já existe um Agente
@@ -255,6 +283,7 @@ namespace Multas.Controllers
         /// </summary>
         /// <param name="id">Identificador do Agente</param>
         /// <returns></returns>
+        [Authorize(Roles = " GestaoDePessoal")]
         public ActionResult Delete(int? id)
         {
             //verificar se foi fornecido um ID válido 
@@ -277,6 +306,7 @@ namespace Multas.Controllers
         // POST: Agentes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = " GestaoDePessoal")]
         public ActionResult DeleteConfirmed(int id)
         {
             try

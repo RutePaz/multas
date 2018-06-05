@@ -53,7 +53,15 @@ namespace Multas
                 roleManager.Create(role);
             }
 
-
+            // criar a Role 'Gestor'
+            if (!roleManager.RoleExists("GestaoDePessoal"))
+            {
+                // não existe a 'role'
+                // então, criar essa role
+                var role = new IdentityRole();
+                role.Name = "GestaoDePessoal";
+                roleManager.Create(role);
+            }
 
             // criar um utilizador 'Agente'
             var user = new ApplicationUser();
@@ -62,6 +70,20 @@ namespace Multas
             //user.Nome = "Luís Freitas";
             string userPWD = "123_Asd";
             var chkUser = userManager.Create(user, userPWD);
+            //Adicionar o Utilizador à respetiva Role-Agente-
+            if (chkUser.Succeeded)
+            {
+                var result1 = userManager.AddToRole(user.Id, "GestaoDePessoal");
+            }
+
+
+            // criar um utilizador 'Agente'
+            var user1 = new ApplicationUser();
+            user.UserName = "tania@mail.pt";
+            user.Email = "tania@mail.pt";
+            //user.Nome = "Luís Freitas";
+            string userPWD1 = "123_Asd";
+            var chkUser1 = userManager.Create(user, userPWD);
 
             //Adicionar o Utilizador à respetiva Role-Agente-
             if (chkUser.Succeeded)

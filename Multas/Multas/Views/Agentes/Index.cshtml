@@ -5,7 +5,7 @@
 }
 
 <h2>Index</h2>
-
+@if(User.IsInRole("GestorDePessoal"))
 <p>
     @Html.ActionLink("Criar Novo Agente", "Create")
 </p>
@@ -23,7 +23,7 @@
         </th>
         <th></th>
     </tr>
-
+    @*item-agente, model-lista de agentes*@
 @foreach (var item in Model) {
     <tr>
         <td>
@@ -39,9 +39,33 @@
             </a>
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Detalhes", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Apagar", "Delete", new { id=item.ID })
+            @if (User.IsInRole("GestaoDePessoal"))
+    {
+        @*links de acesso a editar, detalhes e apagar*@
+        <text>
+            @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Detalhes", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Apagar", "Delete", new { id = item.ID })
+        </text>
+        @*o bloco text, serve para colocar tudo no mesmo if*@
+}
+else
+{
+        @*Os links vão ser acedidos dependedo do user que tem o login feito
+            se a tania tiver o login feito, apenas poderá alterar os dados da tania*@
+        if (User.Identity.Name.Equals(agente.Username)
+{
+        <text>
+            @Html.ActionLink("Editar", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Detalhes", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Apagar", "Delete", new { id = item.ID })
+        </text>
+
+
+}
+
+
+}
         </td>
     </tr>
 }
